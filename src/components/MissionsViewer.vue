@@ -16,13 +16,14 @@
                 </tr>
             </thead>
             <tbody 
-                v-for="mission in sortMission"
+                v-for="mission in missions"
                 :key="mission.id"
             >
                 <tr class="table-hover">
-                    <th >{{ mission.mission_name }}</th>
+                    <th>{{ mission.mission_name }}</th>
                     <td>{{ mission.user_info }}</td>
                     <td>{{ mission.at_create }}</td>
+                    <td>{{ mission.log_count }}</td>
                 </tr>
             </tbody>
         </table>
@@ -36,16 +37,17 @@ export default {
         missions: {
             type: Array,
             required: true
-        }
+        },
+        sortedParam: String,
     },
     data() {
         return{
-            sortedParam: 'mission_name',
             sortedDirection: 1, // asc and desc
             headerCol: [
-                {name: 'mission_name', title: 'Название миссии', width: '40%'},
-                {name: 'author', title: 'Автор', width: '30%'},
+                {name: 'mission_name', title: 'Название миссии', width: '35%'},
+                {name: 'author', title: 'Автор', width: '20%'},
                 {name: 'create_date', title: 'Дата создания', width: '30%'},
+                {name: 'log_count', title: 'Количество лог файлов', width: '15%'},
             ]
         }
     },
@@ -55,22 +57,10 @@ export default {
                 this.sortedDirection *=-1;
             }
             else{
-                this.sortedParam = parameter
+                this.$emit('update:sortedParam', parameter)
                 this.sortedDirection = 1;
             }
-        },
-        visualSort(parameter) {
-            if(this.sortedDirection == parameter){
-                var cl = this.sortedDirection == 1 ? 'th__header_asc':'th__header_desc'
-                console.log(cl)
-            }
-        }
-    },
-    computed: {
-        sortMission() {
-            return [...this.missions].sort((mission1 , mission2)=>{
-                return mission1[this.sortedParam]>mission2[this.sortedParam] ? 1*this.sortedDirection : -1*this.sortedDirection
-            })
+            this.$emit('change_direction', this.sortedDirection)
         }
     }
 }
@@ -78,7 +68,7 @@ export default {
 
 <style scoped>
 .mission__viewer{
-    width: 60%;
+    width: 70%;
     border: 2px solid gray;
     margin-left: auto;
     margin-right: auto;
