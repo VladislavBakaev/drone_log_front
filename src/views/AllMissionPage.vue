@@ -37,7 +37,7 @@ export default {
         async fetchMissions() {
             try{
                 this.isPostLoading = true;
-                const response = await axios.get("http://127.0.0.1:8000/api/yd/mission/get")
+                const response = await axios.get("http://127.0.0.1:8000/api/yd/missions/get")
                 this.missions = response.data['result']
             }
             catch (e){

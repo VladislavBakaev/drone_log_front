@@ -19,7 +19,9 @@
                 v-for="mission in missions"
                 :key="mission.id"
             >
-                <tr class="table-hover">
+                <tr class="table-hover"
+                    @click="$router.push(`/mission/${mission.id}`)"
+                >
                     <th>{{ mission.mission_name }}</th>
                     <td>{{ mission.user_info }}</td>
                     <td>{{ mission.at_create }}</td>

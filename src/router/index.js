@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AllMission from '@/views/AllMissionPage.vue'
 import MissionCreate from '@/views/NewMissionPage.vue'
 import LogCreate from '@/views/NewLogsPage.vue'
+import MissionPage from '@/views/MissionPage.vue'
 
 const routes = [
   {
@@ -18,7 +19,11 @@ const routes = [
     path: '/log_create',
     name: 'LogCreate',
     component: LogCreate
-  }
+  },
+  {
+    path: '/mission/:id',
+    component: MissionPage
+},
 ]
 
 const router = createRouter({
