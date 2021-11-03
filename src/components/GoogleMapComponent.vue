@@ -6,9 +6,9 @@
         :zoom="17"
     >
         <Polyline :options="{ path: path }" />
-        <Marker v-for="point in path"
+        <Marker v-for="(point, index) in path"
                 :key="point"
-                :options="{position: point}"
+                :options="{position: point, label: `${index+1}`}"
         />
     </GoogleMap>
 </template>
