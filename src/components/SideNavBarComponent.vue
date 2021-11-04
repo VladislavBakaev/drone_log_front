@@ -13,15 +13,15 @@
         </div>
         <hr style="color:gray; margin:0;"/>
         <ul class="navbar-nav">
-            <li class="nav-item nav-item-style">
+            <li class="nav-item nav-item-style" data-bs-dismiss="offcanvas">
                 <i class="bi bi-globe icon-style"></i>
                 <a class="nav-link nav-item-text-style">Полетные задания и логи</a>
             </li>
-            <li class="nav-item nav-item-style">
+            <li class="nav-item nav-item-style" data-bs-dismiss="offcanvas" @click="$emit('missionCreateEvent')">
                 <i class="bi bi-geo-alt-fill icon-style"></i>
                 <a class="nav-link nav-item-text-style">Выгрузить полетное задание</a>
             </li>
-            <li class="nav-item nav-item-style">
+            <li class="nav-item nav-item-style" data-bs-dismiss="offcanvas" @click="$emit('logCreateEvent')">
                 <i class="bi bi-geo-fill icon-style"></i>
                 <a class="nav-link nav-item-text-style">Выгрузить логи полетного задания</a>
             </li>
@@ -56,6 +56,7 @@ export default {
     display: flex;
     transition: all 0.3s ease;
     border-radius: 23px ;
+    cursor: pointer;
 }
 .toggle-div-right{
     align-self: flex-end;
@@ -74,6 +75,7 @@ export default {
     display: flex;
     flex-direction: row;
     padding: 5px 15px;
+    cursor: pointer;
 }
 .nav-item-style:hover{
     background: rgba(97, 97, 97, 0.39);

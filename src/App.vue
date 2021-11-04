@@ -18,13 +18,13 @@ export default {
     },
     data() {
         return {
-            isLoading: true
+            isLoading: false
         }
     },
     mounted(){
         setTimeout(()=>{
             this.isLoading = false;
-        }, 4000)
+        }, 3000)
     }
 }
 </script>
