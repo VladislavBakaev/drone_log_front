@@ -1,10 +1,13 @@
 <template>
-    <div class="navbar-dark bg-dark navbar-style">
+    <div class="navbar-dark bg-dark navbar-toggle-style">
         <div class="toggle-div" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenus">
             <i class="bi bi-list nav-toggle-style"></i>
         </div>
     </div>
-    <div class="offcanvas offcanvas-start navbar-dark bg-dark" id="offcanvasMenus" style="width: 300px; border:1px solid gray">
+    <div class="offcanvas offcanvas-start navbar-dark bg-dark navbar-style" id="offcanvasMenus" style="width: 300px; border:1px solid gray">
+        <div class="toggle-div toggle-div-right" data-bs-dismiss="offcanvas">
+            <i class="bi bi-chevron-left nav-toggle-style"></i>
+        </div>
         <div class='logo-div-style'>
             <img class='logo-style' src="@/assets/logo.png"/>
         </div>
@@ -34,7 +37,10 @@ export default {
 
 <style scopen>
 .navbar-style{
-    padding: 8px;
+    padding: 10px;
+}
+.navbar-toggle-style{
+    padding: 3px;
 }
 .nav-toggle-style{
     font-size: 2rem; 
@@ -45,11 +51,14 @@ export default {
     background: rgba(128, 128, 128, 0.24);
 }
 .toggle-div{
-    width: 50px;
-    height: 50px;
+    width: 46px;
+    height: 46px;
     display: flex;
     transition: all 0.3s ease;
-    border-radius: 25px ;
+    border-radius: 23px ;
+}
+.toggle-div-right{
+    align-self: flex-end;
 }
 .logo-style{
     width: 100%;
@@ -58,7 +67,7 @@ export default {
 .logo-div-style{
     width: 100px;
     height: 100px;
-    margin: 20px auto 20px auto;
+    margin: 0px auto 20px auto;
 }
 .nav-item-style{
     margin-top: 10px;

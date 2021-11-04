@@ -1,21 +1,34 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div v-show="!isLoading">
+        <router-view/>
+    </div>
+    <div v-show="isLoading">
+        <loading-page/>
+    </div>
   </div>
 </template>
 
 <script>
+import LoadingPage from '@/components/LoadingPage.vue';
 
 export default {
-  components: {
-  }
+    components: { 
+        LoadingPage
+    },
+    data() {
+        return {
+            isLoading: true
+        }
+    },
+    mounted(){
+        setTimeout(()=>{
+            this.isLoading = false;
+        }, 4000)
+    }
 }
 </script>
 
 <style>
-#app {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+
 </style>
