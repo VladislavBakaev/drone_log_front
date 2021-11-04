@@ -3,6 +3,7 @@ import AllMission from '@/views/AllMissionPage.vue'
 import MissionCreate from '@/views/NewMissionPage.vue'
 import LogCreate from '@/views/NewLogsPage.vue'
 import MissionPage from '@/views/MissionPage.vue'
+import MainMapMission from "@/views/MainMapMission.vue"
 
 const routes = [
   {
@@ -23,7 +24,11 @@ const routes = [
   {
     path: '/mission/:id',
     component: MissionPage
-},
+  },
+  {
+    path: '/main',
+    component: MainMapMission
+  }
 ]
 
 const router = createRouter({
