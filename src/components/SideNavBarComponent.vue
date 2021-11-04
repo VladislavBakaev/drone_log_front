@@ -1,9 +1,9 @@
 <template>
-    <nav class="navbar-dark bg-dark navbar-style">
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenus">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </nav>
+    <div class="navbar-dark bg-dark navbar-style">
+        <div class="toggle-div" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenus">
+            <i class="bi bi-list nav-toggle-style"></i>
+        </div>
+    </div>
     <div class="offcanvas offcanvas-start navbar-dark bg-dark" id="offcanvasMenus" style="width: 300px; border:1px solid gray">
         <div class='logo-div-style'>
             <img class='logo-style' src="@/assets/logo.png"/>
@@ -11,13 +11,16 @@
         <hr style="color:gray; margin:0;"/>
         <ul class="navbar-nav">
             <li class="nav-item nav-item-style">
-                <a href="#" class="nav-link px-4">Полетные задания и логи</a>
+                <i class="bi bi-globe icon-style"></i>
+                <a class="nav-link nav-item-text-style">Полетные задания и логи</a>
             </li>
             <li class="nav-item nav-item-style">
-                <a href="#" class="nav-link px-4">Выгрузить полетное задание</a>
+                <i class="bi bi-geo-alt-fill icon-style"></i>
+                <a class="nav-link nav-item-text-style">Выгрузить полетное задание</a>
             </li>
             <li class="nav-item nav-item-style">
-                <a href="#" class="nav-link px-4">Вышрузить логи полетного задания</a>
+                <i class="bi bi-geo-fill icon-style"></i>
+                <a class="nav-link nav-item-text-style">Выгрузить логи полетного задания</a>
             </li>
         </ul>
     </div>
@@ -31,7 +34,22 @@ export default {
 
 <style scopen>
 .navbar-style{
-    padding: 5px;
+    padding: 8px;
+}
+.nav-toggle-style{
+    font-size: 2rem; 
+    color: gray;
+    margin: auto;
+}
+.toggle-div:hover{
+    background: rgba(128, 128, 128, 0.24);
+}
+.toggle-div{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    transition: all 0.3s ease;
+    border-radius: 25px ;
 }
 .logo-style{
     width: 100%;
@@ -44,9 +62,17 @@ export default {
 }
 .nav-item-style{
     margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    padding: 5px 15px;
 }
 .nav-item-style:hover{
     background: rgba(97, 97, 97, 0.39);
     border-radius: 20px;
+}
+.icon-style{
+    color: gray;
+    align-self: center;
+    margin-right: 15px;
 }
 </style>
