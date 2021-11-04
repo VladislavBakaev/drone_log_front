@@ -3,11 +3,16 @@
         :show="show"
         @update:show="dialogHidden"
     >
-        <input v-model="mission_name" class="form__input" type="text" placeholder="Название миссии"/>
-        <input v-model="author" class="form__input" type="text" placeholder="Автор"/>
-        <textarea v-model="mission_description" class="form__input" placeholder="Описание задания" cols="40" rows="3"/>
-        <label for="formFileSm" class="form-label form__label">Выберете файл полетного задания в формате .BIN</label>
-        <input @change="loadFile" class="form-control form-control-sm form__file" id="formFileSm" type="file" accept=".BIN"/>
+        <input v-model="mission_name" class="form__input" type="text" placeholder="Название выполненной миссии"/>
+        <textarea v-model="mission_description" class="form__input" placeholder="Описание полета" cols="40" rows="3"/>
+        <div class="data__picker">
+            <p class="datapicker-text">Выберете время и дату выполнения полета</p>
+            <datepicker
+                v-model="picked"
+            />
+        </div>
+        <label for="formFileSm" class="form-label form__label">Выберете файл лога полета в формате .LOG</label>
+        <input @change="loadFile" class="form-control form-control-sm form__file" id="formFileSm" type="file" accept=".LOG"/>
         <button @click="sendFile" type="button" class="btn btn-secondary form__button">Отправить</button>
         <div class="div__info" v-if="isUnfillField"><strong>Заполните все поля</strong></div>
     </modal-create-form-component>
@@ -18,7 +23,9 @@ import ModalCreateFormComponent from '@/components/UI/ModalCreateFormComponent.v
 import axios from "axios"
 
 export default {
-    components: { ModalCreateFormComponent },
+  components: {
+        ModalCreateFormComponent
+    },
     props: {
         show: {
             type: Boolean,
@@ -26,10 +33,10 @@ export default {
         }
     },
     data() {
-        return {
+        return{
+            picked: '',
             mission_name: '',
             mission_description: '',
-            author: '',
             isUnfillField: false,
             file: null
         }
@@ -39,9 +46,8 @@ export default {
             this.$emit("update:show", false)
             this.mission_name = ''
             this.mission_description = ''
-            this.author = ''
             this.isUnfillField = false
-            this.file = null
+            this.picked = ''
         },
         loadFile(event) {
             if(event.target.files[0] === undefined){
@@ -54,7 +60,7 @@ export default {
         sendFile() {
             if (this.mission_name == '' ||
                 this.mission_description == '' ||
-                this.author == '' ||
+                this.picked == '' ||
                 this.file == null){
                     this.isUnfillField = true
                     return
@@ -63,16 +69,16 @@ export default {
                 this.isUnfillField = false
             }
             var formData = new FormData();
-            formData.append("mission", this.file);
+            formData.append("log", this.file);
             formData.append("info", JSON.stringify({mission_name: this.mission_name,
                              mission_description: this.mission_description,
-                             author: this.author}))
-            axios.post('http://127.0.0.1:8000/api/yd/flightmission/load', formData, {
+                             flight_data: this.picked}))
+            axios.post('http://127.0.0.1:8000/api/yd/logs/load', formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
             }).then(function (){
-                alert('Миссия успешно загружена')
+                alert('Лог успешно загружен')
             }).catch(function (error) {
                 if (error.response) {
                     alert(error.response.data['message']);
@@ -120,5 +126,15 @@ export default {
 .div__info{
     margin: 15px auto 10px auto;
     color: rgba(172, 0, 0, 0.897);
+}
+.data__picker{
+    display: flex;
+    flex-direction: row;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 15px;
+    justify-content: space-around;
+    align-content: center;
+    color: white;
 }
 </style>

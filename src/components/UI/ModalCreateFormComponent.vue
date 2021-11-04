@@ -34,10 +34,8 @@ export default {
 }
 .modal-content{
     margin: auto;
-    background: rgb(39, 39, 39);
+    background: rgba(32,37,41,255);
     border-radius: 4px;
-    min-height: 50px;
-    min-width: 300px;
     width: 40%;
     padding: 20px;
     display: flex;

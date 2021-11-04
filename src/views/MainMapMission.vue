@@ -2,10 +2,14 @@
     <div class="main-page-style">
         <side-nav-bar-component
             @missionCreateEvent="missionCreateEvent"
+            @logCreateEvent="logCreateEvent"
         />
         <yandex-map-component/>
         <mission-create-component
             v-model:show="missionCreateDislogShow"
+        />
+        <log-create-component
+            v-model:show="logCreateDialogShow"
         />
     </div>
 </template>
@@ -14,6 +18,7 @@
 import YandexMapComponent from '@/components/YandexMapComponent.vue'
 import SideNavBarComponent from "@/components/SideNavBarComponent.vue"
 import MissionCreateComponent from '@/components/MissionCreateComponent.vue'
+import LogCreateComponent from '@/components/LogCreateComponent.vue'
 
 
 export default {
@@ -21,15 +26,20 @@ export default {
         YandexMapComponent,
         SideNavBarComponent,
         MissionCreateComponent,
+        LogCreateComponent,
     },
     data() {
         return {
-            missionCreateDislogShow: false
+            missionCreateDislogShow: false,
+            logCreateDialogShow: false
         }
     },
     methods: {
         missionCreateEvent() {
             this.missionCreateDislogShow = true
+        },
+        logCreateEvent() {
+            this.logCreateDialogShow = true
         }
     }
 }
