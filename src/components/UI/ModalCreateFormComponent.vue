@@ -42,7 +42,7 @@ export default {
 }
 .modal-content{
     margin: auto;
-    background: rgba(32,37,41,255);
+    background: rgba(32,37,41,1);
     border-radius: 4px;
     width: var(--width);
     padding: 20px;

@@ -4,6 +4,7 @@
         @update:show="dialogHidden"
         :width="40"
     >
+        <h3>Выгрузка полетного задания</h3>
         <input v-model="mission_name" class="form__input" type="text" placeholder="Название миссии"/>
         <input v-model="author" class="form__input" type="text" placeholder="Автор"/>
         <textarea v-model="mission_description" class="form__input" placeholder="Описание задания" cols="40" rows="3"/>
@@ -119,5 +120,9 @@ export default {
 .div__info{
     margin: 15px auto 10px auto;
     color: rgba(172, 0, 0, 0.897);
+}
+h3{
+    color: white;
+    align-self: center;
 }
 </style>

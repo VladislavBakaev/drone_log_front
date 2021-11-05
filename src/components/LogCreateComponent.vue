@@ -4,6 +4,7 @@
         @update:show="dialogHidden"
         :width="40"
     >
+        <h3>Выгрузка лога полетного задания</h3>
         <input v-model="mission_name" class="form__input" type="text" placeholder="Название выполненной миссии"/>
         <textarea v-model="mission_description" class="form__input" placeholder="Описание полета" cols="40" rows="3"/>
         <div class="data__picker">
@@ -133,5 +134,9 @@ export default {
     justify-content: space-around;
     align-content: center;
     color: white;
+}
+h3{
+    color: white;
+    align-self: center;
 }
 </style>

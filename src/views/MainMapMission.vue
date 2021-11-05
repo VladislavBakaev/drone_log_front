@@ -3,6 +3,7 @@
         <side-nav-bar-component
             @missionCreateEvent="missionCreateEvent"
             @logCreateEvent="logCreateEvent"
+            @missionAndLogEvent="missionAndLogEvent"
         />
         <yandex-map-component/>
         <mission-create-component
@@ -10,6 +11,9 @@
         />
         <log-create-component
             v-model:show="logCreateDialogShow"
+        />
+        <mission-log-searcher-component
+            v-model:show="missionLogSearcherShow"
         />
     </div>
 </template>
@@ -19,6 +23,7 @@ import YandexMapComponent from '@/components/YandexMapComponent.vue'
 import SideNavBarComponent from "@/components/SideNavBarComponent.vue"
 import MissionCreateComponent from '@/components/MissionCreateComponent.vue'
 import LogCreateComponent from '@/components/LogCreateComponent.vue'
+import MissionLogSearcherComponent from '@/components/MissionLogSearcherComponent.vue'
 
 export default {
     components: {
@@ -26,11 +31,13 @@ export default {
         SideNavBarComponent,
         MissionCreateComponent,
         LogCreateComponent,
+        MissionLogSearcherComponent
     },
     data() {
         return {
             missionCreateDislogShow: false,
-            logCreateDialogShow: false
+            logCreateDialogShow: false,
+            missionLogSearcherShow: false
         }
     },
     methods: {
@@ -39,6 +46,9 @@ export default {
         },
         logCreateEvent() {
             this.logCreateDialogShow = true
+        },
+        missionAndLogEvent() {
+            this.missionLogSearcherShow = true
         }
     }
 }
