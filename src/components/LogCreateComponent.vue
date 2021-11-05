@@ -2,6 +2,7 @@
     <modal-create-form-component
         :show="show"
         @update:show="dialogHidden"
+        :width="40"
     >
         <input v-model="mission_name" class="form__input" type="text" placeholder="Название выполненной миссии"/>
         <textarea v-model="mission_description" class="form__input" placeholder="Описание полета" cols="40" rows="3"/>
@@ -19,13 +20,9 @@
 </template>
 
 <script>
-import ModalCreateFormComponent from '@/components/UI/ModalCreateFormComponent.vue'
 import axios from "axios"
 
 export default {
-  components: {
-        ModalCreateFormComponent
-    },
     props: {
         show: {
             type: Boolean,

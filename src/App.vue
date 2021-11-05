@@ -13,7 +13,7 @@
 import LoadingPage from '@/components/LoadingPage.vue';
 
 export default {
-    components: { 
+    components: {
         LoadingPage
     },
     data() {

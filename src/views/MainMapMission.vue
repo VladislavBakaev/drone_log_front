@@ -20,7 +20,6 @@ import SideNavBarComponent from "@/components/SideNavBarComponent.vue"
 import MissionCreateComponent from '@/components/MissionCreateComponent.vue'
 import LogCreateComponent from '@/components/LogCreateComponent.vue'
 
-
 export default {
     components: {
         YandexMapComponent,

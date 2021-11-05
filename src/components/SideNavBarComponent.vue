@@ -13,7 +13,7 @@
         </div>
         <hr style="color:gray; margin:0;"/>
         <ul class="navbar-nav">
-            <li class="nav-item nav-item-style" data-bs-dismiss="offcanvas">
+            <li class="nav-item nav-item-style" data-bs-dismiss="offcanvas" @click="$emit('missionAndLogEvent')">
                 <i class="bi bi-globe icon-style"></i>
                 <a class="nav-link nav-item-text-style">Полетные задания и логи</a>
             </li>
@@ -31,7 +31,7 @@
 
 <script>
 export default {
-
+    emits: ["missionAndLogEvent", 'missionCreateEvent', 'logCreateEvent']
 }
 </script>
 

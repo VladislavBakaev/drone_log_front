@@ -1,6 +1,6 @@
 <template>
   <div class="modal-window-style" v-if="show" @click="hideDialog">
-      <div class='modal-content' @click.stop>
+      <div class='modal-content' :style="cssProps" @click.stop>
           <slot></slot>
       </div>
   </div>
@@ -12,6 +12,9 @@ export default {
         show:{
             type: Boolean,
             default: false
+        },
+        width:{
+            type: Number
         }
     },
     methods: {
@@ -19,6 +22,11 @@ export default {
             this.$emit('update:show', false)
         }
     },
+    computed:{
+        cssProps(){
+            return {'--width': this.width+"%"}
+        }
+    }
 }
 </script>
 
@@ -36,7 +44,7 @@ export default {
     margin: auto;
     background: rgba(32,37,41,255);
     border-radius: 4px;
-    width: 40%;
+    width: var(--width);
     padding: 20px;
     display: flex;
     flex-direction: column;
