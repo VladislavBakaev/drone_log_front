@@ -5,7 +5,10 @@
             @logCreateEvent="logCreateEvent"
             @missionAndLogEvent="missionAndLogEvent"
         />
-        <yandex-map-component/>
+        <yandex-map-component :key="mapKey"/>
+        <missions-logs-viewer-component
+            v-if="missionsLogsViewerShow"
+        />
         <mission-create-component
             v-model:show="missionCreateDislogShow"
         />
@@ -14,6 +17,8 @@
         />
         <mission-log-searcher-component
             v-model:show="missionLogSearcherShow"
+            @openViewerDiv="missionsLogsViewerShowEvent"
+            v-model:missionsData="missionsData"
         />
     </div>
 </template>
@@ -24,6 +29,7 @@ import SideNavBarComponent from "@/components/SideNavBarComponent.vue"
 import MissionCreateComponent from '@/components/MissionCreateComponent.vue'
 import LogCreateComponent from '@/components/LogCreateComponent.vue'
 import MissionLogSearcherComponent from '@/components/MissionLogSearcherComponent.vue'
+import MissionsLogsViewerComponent from '@/components/MissionsLogsViewerComponent.vue'
 
 export default {
     components: {
@@ -31,13 +37,18 @@ export default {
         SideNavBarComponent,
         MissionCreateComponent,
         LogCreateComponent,
-        MissionLogSearcherComponent
+        MissionLogSearcherComponent,
+        MissionsLogsViewerComponent
     },
     data() {
         return {
             missionCreateDislogShow: false,
             logCreateDialogShow: false,
-            missionLogSearcherShow: false
+            missionLogSearcherShow: false,
+            missionsLogsViewerShow: false,
+            yandexMapShow: true,
+            mapKey: 0,
+            missionsData: []
         }
     },
     methods: {
@@ -49,6 +60,10 @@ export default {
         },
         missionAndLogEvent() {
             this.missionLogSearcherShow = true
+        },
+        missionsLogsViewerShowEvent() {
+            this.missionsLogsViewerShow = true
+            this.mapKey = 1
         }
     }
 }
@@ -57,6 +72,7 @@ export default {
 <style>
 .main-page-style{
     height: 100vh;
+    max-width: 100vw;
     display: flex;
     flex-direction: row;
 }

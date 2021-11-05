@@ -4,6 +4,7 @@
         style="width: 100%; height:100%"
         map-type="hybrid"
         :controls="controls"
+        :zoom="6"
     >
     </yandex-map> 
 </template>

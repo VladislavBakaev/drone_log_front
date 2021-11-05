@@ -52,7 +52,7 @@
             </div>
         </div>
         <button @click="getMissionsLogsData" type="button" class="btn btn-secondary btn-style">Получить данные</button>
-        <p class="info-label">*Поиск идет по частичному совпадению имени и автора. В случае, когда не выбран ни один параметр поиска, загружаются данные о всех миссиях и логах.</p>
+        <p class="info-label">*Поиск идет по частичному совпадению названия миссии и автора. В случае, когда не выбран ни один параметр поиска, загружаются данные о всех миссиях и логах.</p>
     </modal-create-form-component>
 </template>
 
@@ -68,6 +68,9 @@ export default {
         show: {
             type: Boolean,
             default: false
+        },
+        missionsData: {
+            type: Array
         }
     },
     data() {
@@ -88,7 +91,8 @@ export default {
             mission_name_l: '',
             author_name_l: '',
             date_range_l: ['',''],
-            missionsData: []
+            isLoadingData: false,
+            viewMissionsLogData: false
         }
     },
     methods: {
@@ -119,8 +123,14 @@ export default {
                 get_params.params.start_date = this.date_range_m[0]
                 get_params.params.end_date = this.date_range_m[1]
             }
-
-            const response = await axios.get('http://127.0.0.1:8000/api/yd/mission', get_params)
+            this.isLoadingData = true
+            axios.get('http://127.0.0.1:8000/api/yd/mission', get_params)
+            .then((response)=>{
+                this.$emit('update:missionsData', response.data.result)
+                this.isLoadingData = false
+                this.$emit('openViewerDiv')
+                this.dialogHidden()
+            })
             .catch(function (error) {
                 if (error.response) {
                     alert(error.response.data['message']);
@@ -130,9 +140,6 @@ export default {
                     alert('Error', error.message);
                 }
             });
-            if (response != undefined){
-                this.missionsData = response.data.result
-            }
         }
     }
 }
