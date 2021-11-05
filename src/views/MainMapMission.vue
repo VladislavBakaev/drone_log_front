@@ -8,6 +8,7 @@
         <yandex-map-component :key="mapKey"/>
         <missions-logs-viewer-component
             v-if="missionsLogsViewerShow"
+            :missionsData="missionsData"
         />
         <mission-create-component
             v-model:show="missionCreateDislogShow"
