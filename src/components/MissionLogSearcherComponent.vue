@@ -51,12 +51,15 @@
                 </div>
             </div>
         </div>
-        <button type="button" class="btn btn-secondary btn-style">Получить данные</button>
+        <button @click="getMissionsLogsData" type="button" class="btn btn-secondary btn-style">Получить данные</button>
+        <p class="info-label">*Поиск идет по частичному совпадению имени и автора. В случае, когда не выбран ни один параметр поиска, загружаются данные о всех миссиях и логах.</p>
     </modal-create-form-component>
 </template>
 
 <script>
 import CheckBoxComponent from "@/components/UI/CheckBoxComponent.vue"
+import axios from 'axios'
+
 export default {
     components:{
         CheckBoxComponent
@@ -84,7 +87,8 @@ export default {
                 ],
             mission_name_l: '',
             author_name_l: '',
-            date_range_l: ['','']
+            date_range_l: ['',''],
+            missionsData: []
         }
     },
     methods: {
@@ -102,6 +106,33 @@ export default {
             this.author_name_l = ''
             this.date_range_m = ['', '']
             this.date_range_l = ['', '']
+        },
+        async getMissionsLogsData(){
+            var get_params = {params:{}}
+            if (this.checkBoxMissionParams[0].param){
+                get_params.params.name = this.mission_name_m
+            }
+            if (this.checkBoxMissionParams[1].param){
+                get_params.params.user = this.author_name_m
+            }
+            if (this.checkBoxMissionParams[2].param){
+                get_params.params.start_date = this.date_range_m[0]
+                get_params.params.end_date = this.date_range_m[1]
+            }
+
+            const response = await axios.get('http://127.0.0.1:8000/api/yd/mission', get_params)
+            .catch(function (error) {
+                if (error.response) {
+                    alert(error.response.data['message']);
+                } else if (error.request) {
+                    alert('Error connect to server');
+                } else {
+                    alert('Error', error.message);
+                }
+            });
+            if (response != undefined){
+                this.missionsData = response.data.result
+            }
         }
     }
 }
@@ -118,6 +149,11 @@ h5{
 }
 p{
     color: white;
+}
+.info-label{
+    text-align: center;
+    color: gray;
+    margin-top: 10px;
 }
 .content-div{
     display: flex;
