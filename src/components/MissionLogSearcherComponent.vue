@@ -2,22 +2,56 @@
     <modal-create-form-component
         :show="show"
         @update:show="dialogHidden"
-        :width="60"
+        :width="70"
     >
         <h4>Поиск и отображение загруженных файлов полетных заданий и логов</h4>
         <div class="content-div">
             <div class="search-elem-div">
                 <h5>Полетные задания</h5>
                 <p>Выберете парметры поиска полетных заданий</p>
-                <check-box-component v-model:state="missionNameSearchState">
-                    По имени миссии
+                <check-box-component v-for="checkBoxParam in checkBoxMissionParams"
+                                     :key="checkBoxParam.key"
+                                     v-model:state="checkBoxParam.param">
+                    {{checkBoxParam.label}}
                 </check-box-component>
+                <div class="parameter__plaser">
+                    <div class="input__plaser">
+                        <input v-if="checkBoxMissionParams[0].param" class="find__input" type="text" v-model="mission_name_m" placeholder="Название миссии"/>
+                        <input v-if="checkBoxMissionParams[1].param" class="find__input" type="text" v-model="author_name_m" placeholder="Автор"/>
+                    </div>
+                    <datepicker
+                        v-if="checkBoxMissionParams[2].param"
+                        v-model="date_range_m"
+                        range
+                        twoCalendars
+                        class="datepicker__class"
+                    />
+                </div>
             </div>
             <div class="search-elem-div">
                 <h5>Логи</h5>
                 <p>Выберете парметры поиска логов</p>
+                <check-box-component v-for="checkBoxParam in checkBoxLogParams"
+                                     :key="checkBoxParam.key"
+                                     v-model:state="checkBoxParam.param">
+                    {{checkBoxParam.label}}
+                </check-box-component>
+                <div class="parameter__plaser">
+                    <div class="input__plaser">
+                        <input v-if="checkBoxLogParams[0].param" class="find__input" type="text" v-model="mission_name_l" placeholder="Название миссии"/>
+                        <input v-if="checkBoxLogParams[1].param" class="find__input" type="text" v-model="author_name_l" placeholder="Автор"/>
+                    </div>
+                    <datepicker
+                        v-if="checkBoxLogParams[2].param"
+                        v-model="date_range_l"
+                        range
+                        twoCalendars
+                        class="datepicker__class"
+                    />
+                </div>
             </div>
         </div>
+        <button type="button" class="btn btn-secondary btn-style">Получить данные</button>
     </modal-create-form-component>
 </template>
 
@@ -35,12 +69,39 @@ export default {
     },
     data() {
         return{
-            missionNameSearchState: false
+            checkBoxMissionParams: [
+                    {key: 'mission', label: "По имени миссии", param: false},
+                    {key: 'author', label: "По имени автора", param: false},
+                    {key: 'date_range', label: "По временному промежутку создания миссии", param: false},
+                ],
+            mission_name_m: '',
+            author_name_m: '',
+            date_range_m: ['',''],
+            checkBoxLogParams: [
+                    {key: 'mission', label: "По имени миссии", param: false},
+                    {key: 'author', label: "По имени автора", param: false},
+                    {key: 'date_range', label: "По временному промежутку полета", param: false},
+                ],
+            mission_name_l: '',
+            author_name_l: '',
+            date_range_l: ['','']
         }
     },
     methods: {
         dialogHidden() {
             this.$emit("update:show", false)
+            for(let el of this.checkBoxMissionParams){
+                el.param = false;
+            }
+            for(let el of this.checkBoxLogParams){
+                el.param = false;
+            }
+            this.mission_name_m = ''
+            this.mission_name_l = ''
+            this.author_name_m = ''
+            this.author_name_l = ''
+            this.date_range_m = ['', '']
+            this.date_range_l = ['', '']
         }
     }
 }
@@ -67,6 +128,37 @@ p{
 .search-elem-div{
     display: flex;
     flex-direction: column;
+    width: 50%;
+    border: 1px solid gray;
+    margin: 0 10px 0 10px;
+    padding: 10px;
+    border-radius: 2px;
+}
+.parameter__plaser{
+    display: flex;
+    flex-direction: column;
+    border-radius: 5px;
+    padding: 10px;
+}
+.input__plaser{
+    display: flex;
+    flex-direction: column;
+}
+.find__input{
+    border: 1px solid black;
+    border-radius: 2px;
+    padding: 10px 10px;
+    background: rgba(122, 123, 124, 0.616);
+    color: white;
+}
+.find__input::placeholder{
+    color: #bec0c9;
+}
+.datepicker__class{
+    margin-top: 15px;
+}
+.btn-style{
+    margin: 15px auto 0 auto;
     width: 50%;
 }
 </style>

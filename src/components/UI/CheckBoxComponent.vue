@@ -1,5 +1,5 @@
 <template>
-    <div class="form-check">
+    <div class="form-check box-style">
         <input class="form-check-input" type="checkbox" :checked="state" @change="changeBoxState">
         <label class="form-check-label text-color" for="flexCheckDefault">
             <slot></slot>
@@ -30,5 +30,8 @@ export default {
 <style scoped>
 .text-color{
     color: white;
+}
+.box-style{
+    margin-left: 15px;
 }
 </style>
