@@ -5,7 +5,12 @@
             @logCreateEvent="logCreateEvent"
             @missionAndLogEvent="missionAndLogEvent"
         />
-        <yandex-map-component :key="mapKey"/>
+        <yandex-map-component 
+            :key="mapKey"
+            :missionsData="missionDataConvert"
+            v-model:zoom="mapZoom"
+            v-model:center="centerOfMap"
+        />
         <missions-logs-viewer-component
             v-if="missionsLogsViewerShow"
             :missionsData="missionsData"
@@ -19,6 +24,7 @@
         <mission-log-searcher-component
             v-model:show="missionLogSearcherShow"
             @openViewerDiv="missionsLogsViewerShowEvent"
+            @update:missionsData="setMissionKeyState"
             v-model:missionsData="missionsData"
         />
     </div>
@@ -49,7 +55,10 @@ export default {
             missionsLogsViewerShow: false,
             yandexMapShow: true,
             mapKey: 0,
-            missionsData: []
+            missionsData: [],
+            openMissionKey: [],
+            mapZoom: 6,
+            centerOfMap: [55.652555002, 37.537864359] 
         }
     },
     methods: {
@@ -65,6 +74,31 @@ export default {
         missionsLogsViewerShowEvent() {
             this.missionsLogsViewerShow = true
             this.mapKey = 1
+        },
+        setMissionKeyState(data) {
+            this.openMissionKey = []
+            for(let i=0; i<data.length; i++){
+                this.openMissionKey.push(false)
+            }
+        }
+    },
+    computed: {
+        missionDataConvert(){
+            var missionDataConvert = []
+            for(let i=0; i<this.missionsData.length; i++){
+                missionDataConvert.push(JSON.parse(JSON.stringify(this.missionsData[i])))
+                if(this.openMissionKey[i]){
+                    for(let j=0; j<missionDataConvert[i].points.length; j++){
+                        missionDataConvert[i].points[j] = [parseFloat(this.missionsData[i].points[j].targetLat),
+                                                           parseFloat(this.missionsData[i].points[j].targetLon)]
+                    }
+                }
+                else{
+                    missionDataConvert[i].points = [[parseFloat(this.missionsData[i].points[0].targetLat),
+                                                    parseFloat(this.missionsData[i].points[0].targetLon)]]
+                }
+            }
+            return missionDataConvert
         }
     }
 }
