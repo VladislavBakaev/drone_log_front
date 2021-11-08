@@ -10,6 +10,8 @@
             :missionsData="missionDataConvert"
             v-model:zoom="mapZoom"
             v-model:center="centerOfMap"
+            :openMissionKey="openMissionKey"
+            @markerClik="markerClickEvent"
         />
         <missions-logs-viewer-component
             v-if="missionsLogsViewerShow"
@@ -57,7 +59,7 @@ export default {
             mapKey: 0,
             missionsData: [],
             openMissionKey: [],
-            mapZoom: 6,
+            mapZoom: 15,
             centerOfMap: [55.652555002, 37.537864359] 
         }
     },
@@ -80,6 +82,11 @@ export default {
             for(let i=0; i<data.length; i++){
                 this.openMissionKey.push(false)
             }
+        },
+        markerClickEvent(markerId){
+            let missionId = parseInt(markerId.split(':'))
+            this.openMissionKey[missionId] = !this.openMissionKey[missionId]
+            this.mapKey +=1
         }
     },
     computed: {

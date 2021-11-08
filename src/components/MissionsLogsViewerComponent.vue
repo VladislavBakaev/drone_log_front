@@ -1,15 +1,33 @@
 <template>
     <div class='content-div-style'>
-        <div
-            v-for="(mission, index) in missionsData"
-            :key="mission.id"
-            class="element-div-style"
-        >
-            <div>{{index+1}}. {{mission.mission_name}}</div>
-            <div class="element-secondary-style">
-                <p>Автор: {{mission.user_info}}</p>
-                <p>Дата создания: {{mission.at_create.split('T')[0]}}</p>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid nav-link-style">
+                <div class="navbar-nav">
+                    <a :class="{active: currentPage==='missions'}"
+                        @click="currentPage='missions'"
+                        class="nav-link">Миссии</a>
+                    <a :class="{active: currentPage==='logs'}"
+                        @click="currentPage='logs'"
+                        class="nav-link">Логи</a>
+                </div>
             </div>
+        </nav>
+        <hr style="margin:0;">
+        <div v-if="currentPage==='missions'">
+            <div
+                v-for="(mission, index) in missionsData"
+                :key="mission.id"
+                class="element-div-style"
+            >
+                <div>{{index+1}}. {{mission.mission_name}}</div>
+                <div class="element-secondary-style">
+                    <p>Автор: {{mission.user_info}}</p>
+                    <p>Дата создания: {{mission.at_create.split('T')[0]}}</p>
+                </div>
+            </div>
+        </div>
+        <div v-else>
+            text
         </div>
     </div>
 </template>
@@ -19,6 +37,11 @@ export default {
     props:{
         missionsData:{
             type: Array
+        }
+    },
+    data() {
+        return{
+            currentPage: 'missions'
         }
     }
 }
@@ -52,5 +75,9 @@ export default {
 }
 .element-secondary-style > p{
     margin: 0;
+}
+.nav-link-style{
+    justify-content: space-around!important;
+    cursor: pointer;
 }
 </style>

@@ -7,21 +7,25 @@
         :zoom="zoom"
         @boundschange="changeZoom($event), changeCenterMap($event)"
     >
-        <div v-for="(mission) in missionsData" :key="mission">
-            <ymap-marker v-for="(marker,index) in mission.points"
-                :key="marker"
-                :coords="marker" 
-                :marker-id="Date.now()" 
-                hint-content="some hint"
-                :icon="{content:index+1}"
-            />
-            <ymap-marker 
-                marker-type="polyline"
-                :coords="mission.points"
-                :marker-id="Date.now()" 
-                hint-content="Hint content 1"
-                :marker-stroke="{color: '#0044ff', width: 3}"
-            />
+        <div v-for="(mission, mIndex) in missionsData" :key="mission">
+            <div>
+                <ymap-marker v-for="(marker,index) in mission.points"
+                    :key="marker"
+                    :coords="marker" 
+                    :marker-id="mIndex+':'+index" 
+                    :hint-content="`Миссия: ${mIndex+1}`+`\nТочка: ${index+1}`.repeat(+openMissionKey[mIndex])"
+                    :icon="{ color: 'blue'.repeat(+openMissionKey[mIndex])+'red'.repeat(+!openMissionKey[mIndex]),
+                            content:`${mIndex+1}`+`:${index+1}`.repeat(+openMissionKey[mIndex])}"
+                    @click="clikOnMarker"
+                />
+                <ymap-marker 
+                    marker-type="polyline"
+                    :coords="mission.points"
+                    :marker-id="Date.now()" 
+                    hint-content="Hint content 1"
+                    :marker-stroke="{color: '#0044ff', width: 3}"
+                />
+            </div>
         </div>
     </yandex-map> 
 </template>
@@ -66,6 +70,9 @@ export default {
         },
         changeCenterMap(event){
             this.$emit('update:center', event.originalEvent.newCenter)
+        },
+        clikOnMarker(event){
+            this.$emit('markerClik', event.originalEvent.target.properties._data.markerId)
         }
     }
 }
@@ -73,6 +80,6 @@ export default {
 
 <style>
 h1{
-    color: #0044ff;
+    color: #ff0000;
 }
 </style>
