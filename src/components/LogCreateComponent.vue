@@ -56,8 +56,7 @@ export default {
             }
         },
         sendFile() {
-            if (this.mission_name == '' ||
-                this.mission_description == '' ||
+            if (this.mission_description == '' ||
                 this.picked == '' ||
                 this.file == null){
                     this.isUnfillField = true

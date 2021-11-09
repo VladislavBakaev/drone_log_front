@@ -16,6 +16,7 @@
         <missions-logs-viewer-component
             v-if="missionsLogsViewerShow"
             :missionsData="missionsData"
+            :logsData="logsData"
         />
         <mission-create-component
             v-model:show="missionCreateDislogShow"
@@ -28,6 +29,7 @@
             @openViewerDiv="missionsLogsViewerShowEvent"
             @update:missionsData="setMissionKeyState"
             v-model:missionsData="missionsData"
+            v-model:logsData="logsData"
         />
     </div>
 </template>
@@ -58,6 +60,7 @@ export default {
             yandexMapShow: true,
             mapKey: 0,
             missionsData: [],
+            logsData: [],
             openMissionKey: [],
             mapZoom: 15,
             centerOfMap: [55.652555002, 37.537864359] 

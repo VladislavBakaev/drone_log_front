@@ -27,7 +27,17 @@
             </div>
         </div>
         <div v-else>
-            text
+            <div
+                v-for="(log, index) in logsData"
+                :key="log"
+                class="element-div-style"
+            >
+                <div>{{index+1}}.</div>
+                <div class="element-secondary-style">
+                    <p>Имя миссии: {{ log.mission===null?('Без привязки к миссии'):(log.mission) }}</p>
+                    <p>Дата полета: {{log.flight_data.split('T')[0]}}</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -36,6 +46,9 @@
 export default {
     props:{
         missionsData:{
+            type: Array
+        },
+        logsData:{
             type: Array
         }
     },

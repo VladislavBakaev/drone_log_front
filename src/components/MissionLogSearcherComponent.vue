@@ -39,10 +39,9 @@
                 <div class="parameter__plaser">
                     <div class="input__plaser">
                         <input v-if="checkBoxLogParams[0].param" class="find__input" type="text" v-model="mission_name_l" placeholder="Название миссии"/>
-                        <input v-if="checkBoxLogParams[1].param" class="find__input" type="text" v-model="author_name_l" placeholder="Автор"/>
                     </div>
                     <datepicker
-                        v-if="checkBoxLogParams[2].param"
+                        v-if="checkBoxLogParams[1].param"
                         v-model="date_range_l"
                         range
                         twoCalendars
@@ -51,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <button @click="getMissionsLogsData" type="button" class="btn btn-secondary btn-style">Получить данные</button>
+        <button @click="getMissionsData(); getLogsData(); dialogHidden(); $emit('openViewerDiv')" type="button" class="btn btn-secondary btn-style">Получить данные</button>
         <p class="info-label">*Поиск идет по частичному совпадению названия миссии и автора. В случае, когда не выбран ни один параметр поиска, загружаются данные о всех миссиях и логах.</p>
     </modal-create-form-component>
 </template>
@@ -85,7 +84,6 @@ export default {
             date_range_m: ['',''],
             checkBoxLogParams: [
                     {key: 'mission', label: "По имени миссии", param: false},
-                    {key: 'author', label: "По имени автора", param: false},
                     {key: 'date_range', label: "По временному промежутку полета", param: false},
                 ],
             mission_name_l: '',
@@ -107,11 +105,10 @@ export default {
             this.mission_name_m = ''
             this.mission_name_l = ''
             this.author_name_m = ''
-            this.author_name_l = ''
             this.date_range_m = ['', '']
             this.date_range_l = ['', '']
         },
-        async getMissionsLogsData(){
+        async getMissionsData(){
             var get_params = {params:{}}
             if (this.checkBoxMissionParams[0].param){
                 get_params.params.name = this.mission_name_m
@@ -128,8 +125,31 @@ export default {
             .then((response)=>{
                 this.$emit('update:missionsData', response.data.result)
                 this.isLoadingData = false
-                this.$emit('openViewerDiv')
-                this.dialogHidden()
+            })
+            .catch(function (error) {
+                if (error.response) {
+                    alert(error.response.data['message']);
+                } else if (error.request) {
+                    alert('Error connect to server');
+                } else {
+                    alert('Error', error.message);
+                }
+            });
+        },
+        async getLogsData(){
+            var get_params = {params:{}}
+            if (this.checkBoxLogParams[0].param){
+                get_params.params.name = this.mission_name_m
+            }
+            if (this.checkBoxLogParams[1].param){
+                get_params.params.start_date = this.date_range_m[0]
+                get_params.params.end_date = this.date_range_m[1]
+            }
+            this.isLoadingData = true
+            axios.get('http://127.0.0.1:8000/api/yd/logs', get_params)
+            .then((response)=>{
+                this.$emit('update:logsData', response.data.result)
+                this.isLoadingData = false
             })
             .catch(function (error) {
                 if (error.response) {
