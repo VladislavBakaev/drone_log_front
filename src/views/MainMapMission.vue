@@ -8,10 +8,13 @@
         <yandex-map-component 
             :key="mapKey"
             :missionsData="missionDataConvert"
+            :logsData="logsData"
             v-model:zoom="mapZoom"
             v-model:center="centerOfMap"
             :openMissionKey="openMissionKey"
+            :openLogKey="openLogsKey"
             @markerClik="markerClickEvent"
+            @logClik="logClikEvent"
         />
         <missions-logs-viewer-component
             v-if="missionsLogsViewerShow"
@@ -28,6 +31,7 @@
             v-model:show="missionLogSearcherShow"
             @openViewerDiv="missionsLogsViewerShowEvent"
             @update:missionsData="setMissionKeyState"
+            @update:logsData="setLogKeyState"
             v-model:missionsData="missionsData"
             v-model:logsData="logsData"
         />
@@ -62,6 +66,7 @@ export default {
             missionsData: [],
             logsData: [],
             openMissionKey: [],
+            openLogsKey: [],
             mapZoom: 15,
             centerOfMap: [55.652555002, 37.537864359] 
         }
@@ -78,7 +83,8 @@ export default {
         },
         missionsLogsViewerShowEvent() {
             this.missionsLogsViewerShow = true
-            this.mapKey = 1
+            this.mapKey += 1
+            setTimeout(()=>{this.mapKey += 1},50)
         },
         setMissionKeyState(data) {
             this.openMissionKey = []
@@ -86,10 +92,21 @@ export default {
                 this.openMissionKey.push(false)
             }
         },
+        setLogKeyState(data){
+            this.openLogsKey = []
+            for(let i=0; i<data.length; i++){
+                this.openLogsKey.push(false)
+            }
+        },
         markerClickEvent(markerId){
             let missionId = parseInt(markerId.split(':'))
             this.openMissionKey[missionId] = !this.openMissionKey[missionId]
             this.mapKey +=1
+        },
+        logClikEvent(markerId){
+            let logId = parseInt(markerId.split(':'))
+            this.openLogsKey[logId] = !this.openLogsKey[logId]
+            this.mapKey +=1            
         }
     },
     computed: {
