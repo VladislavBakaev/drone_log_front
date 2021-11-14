@@ -17,10 +17,12 @@
             <div
                 v-for="(mission, index) in missionsData"
                 :key="mission.id"
+                :id='index'
                 class="element-div-style"
+                @click="missionClick"
             >
                 <div style="margin-right: 15px">
-                    <check-box-component :id_box="(index+1)*10000" :state="visibleMissionsKey[index]" @click="updateMissionViewerEvent"/>
+                    <check-box-component :id_box="(index+1)*10000" :state="visibleMissionsKey[index]" @click="updateMissionViewerEvent" @click.stop/>
                 </div>
                 <div class='discription-div-style'>
                     <div style='text-align: center;'>{{index+1}}. {{mission.mission_name}}</div>
@@ -34,11 +36,13 @@
         <div v-else>
             <div
                 v-for="(log, index) in logsData"
-                :key="log"
+                :key="index"
+                :id='index'
                 class="element-div-style"
+                @click="logClick"
             >
                 <div style="margin-right: 15px">
-                    <check-box-component :id_box="index" :state="visibleLogsKey[index]" @click="updateLogViewerEvent"/>
+                    <check-box-component :id_box="index" :state="visibleLogsKey[index]" @click="updateLogViewerEvent" @click.stop/>
                 </div>
                 <div class='discription-div-style'>
                     <div style='text-align: center;' >{{index+1}}.</div>
@@ -89,6 +93,14 @@ export default {
             if (data != undefined && id != undefined){
                 this.$emit('misionVisibleUpdate', {'id': id, 'state':data})
             }
+        },
+        logClick(event){
+            let id = event.currentTarget.id
+            this.$emit('missionLogClick', {type: 'log', id: parseInt(id)})
+        },
+        missionClick(event){
+            let id = event.currentTarget.id
+            this.$emit('missionLogClick', {type: 'mission', id: parseInt(id)})
         }
     }
 }
@@ -112,6 +124,11 @@ export default {
     border: 1px solid rgb(80, 80, 80);
     border-radius: 3px;
     align-items: center;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.element-div-style:hover{
+    background: rgba(97, 97, 97, 0.39);
 }
 .element-secondary-style{
     display: flex;

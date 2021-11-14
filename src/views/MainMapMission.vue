@@ -26,6 +26,7 @@
             :visibleMissionsKey='visibleMissionKey'
             @logVisibleUpdate="logVisibleUpdateEvent"
             @misionVisibleUpdate="misionVisibleUpdateEvent"
+            @missionLogClick="missionLogClickEvent"
         />
         <mission-create-component
             v-model:show="missionCreateDislogShow"
@@ -41,6 +42,12 @@
             v-model:missionsData="missionsData"
             v-model:logsData="logsData"
         />
+        <transition name="slide-fade">
+            <log-mission-info-component
+                v-show="missionLogInfoViewerShow"
+                @closeInfo="closeMissionLogInfo"
+            />
+        </transition>
     </div>
 </template>
 
@@ -51,6 +58,7 @@ import MissionCreateComponent from '@/components/MissionCreateComponent.vue'
 import LogCreateComponent from '@/components/LogCreateComponent.vue'
 import MissionLogSearcherComponent from '@/components/MissionLogSearcherComponent.vue'
 import MissionsLogsViewerComponent from '@/components/MissionsLogsViewerComponent.vue'
+import LogMissionInfoComponent from '@/components/LogMissionInfoComponent.vue'
 
 export default {
     components: {
@@ -59,7 +67,8 @@ export default {
         MissionCreateComponent,
         LogCreateComponent,
         MissionLogSearcherComponent,
-        MissionsLogsViewerComponent
+        MissionsLogsViewerComponent,
+        LogMissionInfoComponent
     },
     data() {
         return {
@@ -67,6 +76,7 @@ export default {
             logCreateDialogShow: false,
             missionLogSearcherShow: false,
             missionsLogsViewerShow: false,
+            missionLogInfoViewerShow: false,
             yandexMapShow: true,
             mapKey: 0,
             missionsData: [],
@@ -125,6 +135,13 @@ export default {
         misionVisibleUpdateEvent(data){
             this.visibleMissionKey[data.id] = data.state
             this.mapKey +=1;
+        },
+        missionLogClickEvent(data){
+            this.missionLogInfoViewerShow = true
+            console.log(data)
+        },
+        closeMissionLogInfo(){
+            this.missionLogInfoViewerShow = false
         }
     },
     computed: {
@@ -163,5 +180,11 @@ export default {
     max-width: 100vw;
     display: flex;
     flex-direction: row;
+}
+.slide-fade-leave-active {
+  transition: all 1s ease
+}
+.slide-fade-leave-to {
+  transform: translateX(350px);
 }
 </style>

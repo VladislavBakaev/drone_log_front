@@ -76,6 +76,7 @@ export default {
     flex-direction: row;
     padding: 5px 15px;
     cursor: pointer;
+    transition: 0.3s;
 }
 .nav-item-style:hover{
     background: rgba(97, 97, 97, 0.39);
