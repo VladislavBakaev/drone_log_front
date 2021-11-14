@@ -46,6 +46,8 @@
             <log-mission-info-component
                 v-show="missionLogInfoViewerShow"
                 @closeInfo="closeMissionLogInfo"
+                :infoViewerKey="infoViewerKey"
+                :infoViewer="infoViewer"
             />
         </transition>
     </div>
@@ -85,8 +87,10 @@ export default {
             visibleMissionKey: [],
             visibleLogsKey: [],
             openLogsKey: [],
+            infoViewerKey: '',
+            infoViewer: {},
             mapZoom: 15,
-            centerOfMap: [55.652555002, 37.537864359] 
+            centerOfMap: [55.652555002, 37.537864359]
         }
     },
     methods: {
@@ -138,7 +142,17 @@ export default {
         },
         missionLogClickEvent(data){
             this.missionLogInfoViewerShow = true
-            console.log(data)
+            this.infoViewerKey = data.type
+            if(this.infoViewerKey === 'mission'){
+                this.infoViewer = this.missionsData[data.id]
+                let id = Math.ceil(this.missionDataConvertCoord[data.id].points.length/2)
+                this.centerOfMap = this.missionDataConvertCoord[data.id].points[id]
+            }
+            else{
+                this.infoViewer = this.logsData[data.id]
+                let id = Math.ceil(this.logsData[data.id].points.length/2)
+                this.centerOfMap = this.logsData[data.id].points[id]
+            }
         },
         closeMissionLogInfo(){
             this.missionLogInfoViewerShow = false
