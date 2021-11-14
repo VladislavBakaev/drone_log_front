@@ -19,10 +19,15 @@
                 :key="mission.id"
                 class="element-div-style"
             >
-                <div>{{index+1}}. {{mission.mission_name}}</div>
-                <div class="element-secondary-style">
-                    <p>Автор: {{mission.user_info}}</p>
-                    <p>Дата создания: {{mission.at_create.split('T')[0]}}</p>
+                <div style="margin-right: 15px">
+                    <check-box-component :id_box="(index+1)*10000" :state="visibleMissionsKey[index]" @click="updateMissionViewerEvent"/>
+                </div>
+                <div class='discription-div-style'>
+                    <div style='text-align: center;'>{{index+1}}. {{mission.mission_name}}</div>
+                    <div class="element-secondary-style">
+                        <p>Автор: {{mission.user_info}}</p>
+                        <p>Дата создания: {{mission.at_create.split('T')[0]}}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -32,10 +37,15 @@
                 :key="log"
                 class="element-div-style"
             >
-                <div>{{index+1}}.</div>
-                <div class="element-secondary-style">
-                    <p>Имя миссии: {{ log.mission===null?('Без привязки к миссии'):(log.mission) }}</p>
-                    <p>Дата полета: {{log.flight_data.split('T')[0]}}</p>
+                <div style="margin-right: 15px">
+                    <check-box-component :id_box="index" :state="visibleLogsKey[index]" @click="updateLogViewerEvent"/>
+                </div>
+                <div class='discription-div-style'>
+                    <div style='text-align: center;' >{{index+1}}.</div>
+                    <div class="element-secondary-style">
+                        <p>Имя миссии: {{ log.mission===null?('Без привязки к миссии'):(log.mission) }}</p>
+                        <p>Дата полета: {{log.flight_data.split('T')[0]}}</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,18 +53,42 @@
 </template>
 
 <script>
+import CheckBoxComponent from '@/components/UI/CheckBoxComponent.vue'
 export default {
+  components: { CheckBoxComponent },
     props:{
         missionsData:{
             type: Array
         },
         logsData:{
             type: Array
+        },
+        visibleLogsKey:{
+            type: Array
+        },
+        visibleMissionsKey: {
+            type: Array
         }
     },
     data() {
         return{
             currentPage: 'missions'
+        }
+    },
+    methods: {
+        updateLogViewerEvent(event){
+            let data = event.target.checked;
+            let id = parseInt(event.target.id);
+            if (data != undefined && id != undefined){
+                this.$emit('logVisibleUpdate', {'id': id, 'state':data})
+            }
+        },
+        updateMissionViewerEvent(event){
+            let data = event.target.checked;
+            let id = parseInt(event.target.id)/10000-1;
+            if (data != undefined && id != undefined){
+                this.$emit('misionVisibleUpdate', {'id': id, 'state':data})
+            }
         }
     }
 }
@@ -70,14 +104,14 @@ export default {
 .element-div-style{
     padding: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     margin-top: 10px;
     margin-right: 10px;
     margin-left: 10px;
     font-size: 15px;
-    text-align: center;
     border: 1px solid rgb(80, 80, 80);
     border-radius: 3px;
+    align-items: center;
 }
 .element-secondary-style{
     display: flex;
@@ -92,5 +126,8 @@ export default {
 .nav-link-style{
     justify-content: space-around!important;
     cursor: pointer;
+}
+.discription-div-style{
+    width: -webkit-fill-available;
 }
 </style>

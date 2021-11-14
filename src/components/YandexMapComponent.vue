@@ -8,57 +8,73 @@
         @boundschange="changeZoom($event), changeCenterMap($event)"
     >
         <div v-for="(mission, mIndex) in missionsData" :key="mission.id">
-            <ymap-marker v-for="(marker,index) in mission.points"
-                :key="marker"
-                :coords="marker" 
-                :marker-id="mIndex+':'+index" 
-                :hint-content="`Миссия: ${mIndex+1}`+`\nТочка: ${index+1}`.repeat(+openMissionKey[mIndex])"
-                :icon="{ color: 'blue'.repeat(+openMissionKey[mIndex])+'red'.repeat(+!openMissionKey[mIndex]),
-                        content:`Миссия ${mIndex+1}`+`:${index+1}`.repeat(+openMissionKey[mIndex])}"
-                @click="clikOnMission"
-            />
-            <ymap-marker 
-                marker-type="polyline"
-                :coords="mission.points"
-                :marker-id="Date.now()" 
-                :marker-stroke="{color: '#0044ff', width: 3}"
-            />
+            <div v-if='visibleMissionKey[mIndex]'>
+                <div v-if="openMissionKey[mIndex]">
+                    <ymap-marker v-for="(marker,index) in mission.points"
+                        :key="marker"
+                        :coords="marker" 
+                        :marker-id="mIndex+':'+index" 
+                        :hint-content="`Миссия: ${mIndex+1}. Точка: ${index+1}`"
+                        :icon="{ color: 'blue',
+                                content:`Миссия ${mIndex+1}:${index+1}`}"
+                        @click="clikOnMission"
+                    />
+                    <ymap-marker 
+                        marker-type="polyline"
+                        :coords="mission.points"
+                        :marker-id="Date.now()" 
+                        :marker-stroke="{color: '#0044ff', width: 3}"
+                    />
+                </div>
+                <div v-else>
+                    <ymap-marker
+                        :coords="mission.points[Math.ceil(mission.points.length/2)]" 
+                        :marker-id="mIndex+':mission'" 
+                        :hint-content="`Миссия: ${mIndex+1}`"
+                        :icon="{ color: 'red',
+                                content:`Миссия ${mIndex+1}`}"
+                        @click="clikOnMission"
+                    />
+                </div>
+            </div>
         </div>
         <div v-for="(log, lIndex) in logsData" :key="log.at_create">
-            <div v-if="openLogKey[lIndex]">
-                <ymap-marker
-                    :coords="log.points[0]"
-                    :marker-id="lIndex+':start'"
-                    :hint-content="`Лог ${lIndex+1}. Старт.`"
-                    :icon="{ color: 'yellow',
-                        content:`Лог ${lIndex+1}. Старт.`}"
-                    @click="clikOnLog"
-                />
-                <ymap-marker
-                    :coords="log.points[log.points.length-1]"
-                    :marker-id="lIndex+':stop'"
-                    :hint-content="`Лог ${lIndex+1}. Финиш.`"
-                    :icon="{ color: 'yellow',
-                        content:`Лог ${lIndex+1}. Финиш.`}"
-                    @click="clikOnLog"
-                />
-                <ymap-marker
-                    marker-type="polyline"
-                    :coords="log.points"
-                    :marker-id="Date.now()" 
-                    :hint-content="`Лог ${lIndex+1}`"
-                    :marker-stroke="{color: '#ff0000', width: 4}"
-                />
-            </div>
-            <div v-else>
-                <ymap-marker
-                    :coords="log.points[Math.ceil(log.points.length/2)]"
-                    :marker-id="lIndex+':marker'"
-                    :hint-content="`Лог ${lIndex+1}`"
-                    :icon="{ color: 'green',
-                        content:`Лог ${lIndex+1}`}"
-                    @click="clikOnLog"
-                />
+            <div v-if='visibleLogsKey[lIndex]'>
+                <div v-if="openLogKey[lIndex]">
+                    <ymap-marker
+                        :coords="log.points[0]"
+                        :marker-id="lIndex+':start'"
+                        :hint-content="`Лог ${lIndex+1}. Старт.`"
+                        :icon="{ color: 'yellow',
+                            content:`Лог ${lIndex+1}. Старт.`}"
+                        @click="clikOnLog"
+                    />
+                    <ymap-marker
+                        :coords="log.points[log.points.length-1]"
+                        :marker-id="lIndex+':stop'"
+                        :hint-content="`Лог ${lIndex+1}. Финиш.`"
+                        :icon="{ color: 'yellow',
+                            content:`Лог ${lIndex+1}. Финиш.`}"
+                        @click="clikOnLog"
+                    />
+                    <ymap-marker
+                        marker-type="polyline"
+                        :coords="log.points"
+                        :marker-id="Date.now()" 
+                        :hint-content="`Лог ${lIndex+1}`"
+                        :marker-stroke="{color: '#ff0000', width: 4}"
+                    />
+                </div>
+                <div v-else>
+                    <ymap-marker
+                        :coords="log.points[Math.ceil(log.points.length/2)]"
+                        :marker-id="lIndex+':marker'"
+                        :hint-content="`Лог ${lIndex+1}`"
+                        :icon="{ color: 'green',
+                            content:`Лог ${lIndex+1}`}"
+                        @click="clikOnLog"
+                    />
+                </div>
             </div>
         </div>
     </yandex-map> 
@@ -89,6 +105,12 @@ export default {
             type: Number
         },
         center: {
+            type: Array
+        },
+        visibleMissionKey: {
+            type: Array
+        },
+        visibleLogsKey: {
             type: Array
         }
     },

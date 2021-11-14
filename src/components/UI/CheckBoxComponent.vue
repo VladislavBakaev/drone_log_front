@@ -1,6 +1,6 @@
 <template>
     <div class="form-check box-style">
-        <input class="form-check-input" type="checkbox" :checked="state" @change="changeBoxState">
+        <input :id='id_box' class="form-check-input" type="checkbox" :checked="state" @change="changeBoxState">
         <label class="form-check-label text-color" for="flexCheckDefault">
             <slot></slot>
         </label>
@@ -13,6 +13,9 @@ export default {
         state: {
             type: Boolean,
             default: false
+        },
+        id_box: {
+            type: Number
         }
     },
     data() {
@@ -32,6 +35,6 @@ export default {
     color: white;
 }
 .box-style{
-    margin-left: 15px;
+    margin-left: 10px;
 }
 </style>
