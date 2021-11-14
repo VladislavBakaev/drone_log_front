@@ -11,7 +11,7 @@
             <p>Автор: <br> {{infoViewer.user_info}}</p>
             <p>Описание мисии: <br> {{infoViewer.description}}</p>
             <p>Дата создания: <br> {{infoViewer.at_create.split('T')[0]}}</p>
-            <a href="#" :download="infoViewer.flight_mission_file.split('/')[1]">
+            <a :href="'http://127.0.0.1:8000/app/media/'+infoViewer.flight_mission_file" :download="infoViewer.flight_mission_file.split('/')[1]">
                 <button type="button" class="btn btn-secondary">Скачать файл полетного задания в формате .BIN</button>
             </a>
             <hr style="color: gray;" />
@@ -24,7 +24,7 @@
             <p>Описание лога: <br> {{infoViewer.description}}</p>
             <p>Дата создания: <br> {{infoViewer.at_create.split('T')[0]}}</p>
             <p>Дата выполнения полета: <br> {{infoViewer.flight_data.split('T')[0]}}</p>
-            <a href="#" :download="infoViewer.upload.split('/')[1]">
+            <a :href="'http://127.0.0.1:8000/app/media/'+infoViewer.upload" :download="infoViewer.upload.split('/')[1]">
                 <button type="button" class="btn btn-secondary">Скачать файл лога в формате .LOG</button>
             </a>
             <hr style="color: gray;"/>
