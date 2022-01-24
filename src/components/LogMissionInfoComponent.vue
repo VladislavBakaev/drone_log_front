@@ -7,10 +7,10 @@
         <div class="info-elements-div-style"
             v-if="infoViewerKey=='mission'"
         >
-            <p>Название миссии:<br> {{infoViewer.mission_name}}</p>
-            <p>Автор: <br> {{infoViewer.user_info}}</p>
-            <p>Описание мисии: <br> {{infoViewer.description}}</p>
-            <p>Дата создания: <br> {{infoViewer.at_create.split('T')[0]}}</p>
+            <p>Название миссии:<br> <span>{{infoViewer.mission_name}}</span></p>
+            <p>Автор: <br> <span>{{infoViewer.user_info}}</span></p>
+            <p>Описание мисии: <br> <span>{{infoViewer.description}}</span></p>
+            <p>Дата создания: <br> <span>{{infoViewer.at_create.split('T')[0]}}</span></p>
             <a :href="'http://127.0.0.1:8000/app/media/'+infoViewer.flight_mission_file" :download="infoViewer.flight_mission_file.split('/')[1]">
                 <button type="button" class="btn btn-secondary">Скачать файл полетного задания в формате .BIN</button>
             </a>
@@ -20,12 +20,13 @@
         <div v-if="infoViewerKey=='log'"
             class="info-elements-div-style"
         >
-            <p>Название миссии: <br> {{infoViewer.mission}}</p>
-            <p>Описание лога: <br> {{infoViewer.description}}</p>
-            <p>Дата создания: <br> {{infoViewer.at_create.split('T')[0]}}</p>
-            <p>Дата выполнения полета: <br> {{infoViewer.flight_data.split('T')[0]}}</p>
+            <p>Название миссии: <br> <span>{{infoViewer.mission}}</span></p>
+            <p>Описание лога: <br> <span>{{infoViewer.description}}</span></p>
+            <p>Дата создания: <br> <span>{{infoViewer.at_create.split('T')[0]}}</span></p>
+            <p>Дата выполнения полета: <br> <span>{{infoViewer.flight_data.split('T')[0]}}</span></p>
+            <p>Протокол: <br> <span>{{infoViewer.protocol_type}}</span></p>
             <a :href="'http://127.0.0.1:8000/app/media/'+infoViewer.upload" :download="infoViewer.upload.split('/')[1]">
-                <button type="button" class="btn btn-secondary">Скачать файл лога в формате .LOG</button>
+                <button type="button" class="btn btn-secondary">Скачать файл лога</button>
             </a>
             <hr style="color: gray;"/>
         </div>
@@ -95,5 +96,9 @@ export default {
 .info-elements-div-style > a{
     margin-top: 10px;
     margin-bottom: 0;
+}
+.info-elements-div-style > p > span{
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.603);
 }
 </style>

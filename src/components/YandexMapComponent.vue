@@ -28,7 +28,7 @@
                 </div>
                 <div v-else>
                     <ymap-marker
-                        :coords="mission.points[Math.ceil(mission.points.length/2)]" 
+                        :coords="mission.points[0]" 
                         :marker-id="mIndex+':mission'" 
                         :hint-content="`Миссия: ${mIndex+1}`"
                         :icon="{ color: 'red',
@@ -67,7 +67,7 @@
                 </div>
                 <div v-else>
                     <ymap-marker
-                        :coords="log.points[Math.ceil(log.points.length/2)]"
+                        :coords="log.points[0]"
                         :marker-id="lIndex+':marker'"
                         :hint-content="`Лог ${lIndex+1}`"
                         :icon="{ color: 'green',

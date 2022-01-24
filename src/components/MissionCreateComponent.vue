@@ -8,8 +8,15 @@
         <input v-model="mission_name" class="form__input" type="text" placeholder="Название миссии"/>
         <input v-model="author" class="form__input" type="text" placeholder="Автор"/>
         <textarea v-model="mission_description" class="form__input" placeholder="Описание задания" cols="40" rows="3"/>
-        <label for="formFileSm" class="form-label form__label">Выберете файл полетного задания в формате .BIN</label>
-        <input @change="loadFile" class="form-control form-control-sm form__file" id="formFileSm" type="file" accept=".BIN"/>
+        <label for="formFileSm" class="form-label form__label">Выберете файл полетного задания в формате .BIN (формат Воробьева Ю.Д.) или .waypoints</label>
+        <input @change="loadFile" class="form-control form-control-sm form__file" id="formFileSm" type="file" accept=".BIN, .waypoints"/>
+        <label class="form-label form__label">Выберете протокол выбранного файла полетного задания</label>
+
+        <select class="form__file" v-model="selected_type">
+            <option selected value="YD">Формат Воробьева Ю.Д.</option>
+            <option value="ML">MavLink</option>
+            <option value="PX4">PX4</option>
+        </select>
         <button @click="sendFile" type="button" class="btn btn-secondary form__button">Отправить</button>
         <div class="div__info" v-if="isUnfillField"><strong>Заполните все поля</strong></div>
     </modal-create-form-component>
@@ -31,7 +38,9 @@ export default {
             mission_description: '',
             author: '',
             isUnfillField: false,
-            file: null
+            file: null,
+            selected_type: 'YD'
+
         }
     },
     methods: {
@@ -42,6 +51,7 @@ export default {
             this.author = ''
             this.isUnfillField = false
             this.file = null
+            this.selected_type = 'YD'
         },
         loadFile(event) {
             if(event.target.files[0] === undefined){
@@ -66,8 +76,9 @@ export default {
             formData.append("mission", this.file);
             formData.append("info", JSON.stringify({mission_name: this.mission_name,
                              mission_description: this.mission_description,
-                             author: this.author}))
-            axios.post('http://127.0.0.1:8000/api/yd/flightmission/load', formData, {
+                             author: this.author,
+                             protocol_type: this.selected_type}))
+            axios.post('http://127.0.0.1:8000/api/drone/mission/load', formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
@@ -105,10 +116,12 @@ export default {
     margin-right: auto;
     margin-left: auto;
     color: white;
+    text-align: center;
 }
 .form__file{
     margin-left: auto;
     margin-right: auto;
+    height: 30px;
     width: 95%;
     background: rgba(128, 128, 128, 0.616);
     color: white;

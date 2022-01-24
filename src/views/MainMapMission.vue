@@ -145,13 +145,11 @@ export default {
             this.infoViewerKey = data.type
             if(this.infoViewerKey === 'mission'){
                 this.infoViewer = this.missionsData[data.id]
-                let id = Math.ceil(this.missionDataConvertCoord[data.id].points.length/2)
-                this.centerOfMap = this.missionDataConvertCoord[data.id].points[id]
+                this.centerOfMap = this.missionDataConvertCoord[data.id].points[0]
             }
             else{
                 this.infoViewer = this.logsData[data.id]
-                let id = Math.ceil(this.logsData[data.id].points.length/2)
-                this.centerOfMap = this.logsData[data.id].points[id]
+                this.centerOfMap = this.logsData[data.id].points[0]
             }
         },
         closeMissionLogInfo(){
@@ -163,9 +161,17 @@ export default {
             var missionDataConvert = []
             for(let i=0; i<this.missionsData.length; i++){
                 missionDataConvert.push(JSON.parse(JSON.stringify(this.missionsData[i])))
-                for(let j=0; j<missionDataConvert[i].points.length; j++){
-                    missionDataConvert[i].points[j] = [parseFloat(this.missionsData[i].points[j].targetLat),
-                                                        parseFloat(this.missionsData[i].points[j].targetLon)]
+                if(missionDataConvert[i].protocol_type=='YD'){
+                    for(let j=0; j<missionDataConvert[i].points.length; j++){
+                        missionDataConvert[i].points[j] = [parseFloat(this.missionsData[i].points[j].targetLat),
+                                                            parseFloat(this.missionsData[i].points[j].targetLon)]
+                    }
+                }
+                else{
+                    for(let j=0; j<missionDataConvert[i].points.length; j++){
+                        missionDataConvert[i].points[j] = [parseFloat(this.missionsData[i].points[j].x),
+                                                            parseFloat(this.missionsData[i].points[j].y)]
+                    }  
                 }
             }
             return missionDataConvert

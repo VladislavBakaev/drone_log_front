@@ -121,7 +121,7 @@ export default {
                 get_params.params.end_date = this.date_range_m[1]
             }
             this.isLoadingData = true
-            axios.get('http://127.0.0.1:8000/api/yd/mission', get_params)
+            axios.get('http://127.0.0.1:8000/api/drone/mission/get', get_params)
             .then((response)=>{
                 this.$emit('update:missionsData', response.data.result)
                 this.isLoadingData = false
@@ -146,7 +146,7 @@ export default {
                 get_params.params.end_date = this.date_range_m[1]
             }
             this.isLoadingData = true
-            axios.get('http://127.0.0.1:8000/api/yd/logs', get_params)
+            axios.get('http://127.0.0.1:8000/api/drone/log/get', get_params)
             .then((response)=>{
                 this.$emit('update:logsData', response.data.result)
                 this.isLoadingData = false

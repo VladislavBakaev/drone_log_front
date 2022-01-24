@@ -13,8 +13,16 @@
                 v-model="picked"
             />
         </div>
-        <label for="formFileSm" class="form-label form__label">Выберете файл лога полета в формате .LOG</label>
-        <input @change="loadFile" class="form-control form-control-sm form__file" id="formFileSm" type="file" accept=".LOG"/>
+        <label for="formFileSm" class="form-label form__label">Выберете файл лога полета в формате .LOG (Формат Воробьева Ю.Д) или .BIN (MavLink, PX4)</label>
+        <input @change="loadFile" class="form-control form-control-sm form__file" id="formFileSm" type="file" accept=".LOG, .BIN"/>
+        <label class="form-label form__label">Выберете протокол выбранного лог файла</label>
+
+        <select class="form__file" v-model="selected_type">
+            <option selected value="YD">Формат Воробьева Ю.Д.</option>
+            <option value="ML">MavLink</option>
+            <option value="PX4">PX4</option>
+        </select>
+
         <button @click="sendFile" type="button" class="btn btn-secondary form__button">Отправить</button>
         <div class="div__info" v-if="isUnfillField"><strong>Заполните все поля</strong></div>
     </modal-create-form-component>
@@ -36,7 +44,8 @@ export default {
             mission_name: '',
             mission_description: '',
             isUnfillField: false,
-            file: null
+            file: null,
+            selected_type: 'YD'
         }
     },
     methods: {
@@ -46,6 +55,7 @@ export default {
             this.mission_description = ''
             this.isUnfillField = false
             this.picked = ''
+            this.selected_type = 'YD'
         },
         loadFile(event) {
             if(event.target.files[0] === undefined){
@@ -69,8 +79,9 @@ export default {
             formData.append("log", this.file);
             formData.append("info", JSON.stringify({mission_name: this.mission_name,
                              mission_description: this.mission_description,
-                             flight_data: this.picked}))
-            axios.post('http://127.0.0.1:8000/api/yd/logs/load', formData, {
+                             flight_data: this.picked,
+                             protocol_type: this.selected_type}))
+            axios.post('http://127.0.0.1:8000/api/drone/log/load', formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }
@@ -105,14 +116,14 @@ export default {
 }
 .form__label{
     margin-top: 20px;
-    margin-right: auto;
-    margin-left: auto;
     color: white;
+    text-align: center;
 }
 .form__file{
     margin-left: auto;
     margin-right: auto;
     width: 95%;
+    height: 30px;
     background: rgba(128, 128, 128, 0.616);
     color: white;
 }
