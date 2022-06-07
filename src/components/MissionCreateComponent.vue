@@ -23,8 +23,6 @@
 </template>
 
 <script>
-import axios from "axios"
-
 export default {
     props: {
         show: {
@@ -78,7 +76,7 @@ export default {
                              mission_description: this.mission_description,
                              author: this.author,
                              protocol_type: this.selected_type}))
-            axios.post('http://127.0.0.1:8000/api/drone/mission/load', formData, {
+            this.$http.post('api/drone/mission/load', formData, {
                 headers: {
                 'Content-Type': 'multipart/form-data'
                 }

@@ -23,7 +23,7 @@
                         v-if="checkBoxMissionParams[2].param"
                         v-model="date_range_m"
                         range
-                        twoCalendars
+                        multiCalendars
                         class="datepicker__class"
                     />
                 </div>
@@ -44,7 +44,7 @@
                         v-if="checkBoxLogParams[1].param"
                         v-model="date_range_l"
                         range
-                        twoCalendars
+                        multiCalendars
                         class="datepicker__class"
                     />
                 </div>
@@ -57,7 +57,6 @@
 
 <script>
 import CheckBoxComponent from "@/components/UI/CheckBoxComponent.vue"
-import axios from 'axios'
 
 export default {
     components:{
@@ -121,7 +120,7 @@ export default {
                 get_params.params.end_date = this.date_range_m[1]
             }
             this.isLoadingData = true
-            axios.get('http://127.0.0.1:8000/api/drone/mission/get', get_params)
+            this.$http.get('api/drone/mission/get', get_params)
             .then((response)=>{
                 this.$emit('update:missionsData', response.data.result)
                 this.isLoadingData = false
@@ -146,7 +145,7 @@ export default {
                 get_params.params.end_date = this.date_range_m[1]
             }
             this.isLoadingData = true
-            axios.get('http://127.0.0.1:8000/api/drone/log/get', get_params)
+            this.$http.get('api/drone/log/get', get_params)
             .then((response)=>{
                 this.$emit('update:logsData', response.data.result)
                 this.isLoadingData = false
